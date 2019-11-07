@@ -1,5 +1,5 @@
 #autor:      Pedro Sousa, Joao Sollari Lopes
-#local:      INE, Lisboa
+#local:      INE, Lisboa e Porto
 #criado:     07.11.2019
 #modificado: 07.11.2019
 
