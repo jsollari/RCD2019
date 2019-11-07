@@ -1,4 +1,4 @@
-#autor:      Joao Sollari Lopes
+#autor:      Pedro Sousa, Joao Sollari Lopes
 #local:      INE, Lisboa
 #criado:     07.11.2019
 #modificado: 07.11.2019
