@@ -1,0 +1,6 @@
+"","original","Gaussian"
+"n",53917,Inf
+"mean",0,0
+"sd",1,1
+"skewness",-0.055,0
+"kurtosis",1.866,3
