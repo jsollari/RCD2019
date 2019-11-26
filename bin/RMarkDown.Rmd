@@ -1,0 +1,54 @@
+---
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+library(sf)
+library(readxl)
+library(tidyverse)
+library(knitr)
+```
+
+```{r Carregar ficheiros, include=FALSE}
+GanhoRegioes <- read_excel("../data/GanhoRegioes.xlsx")
+load("../data/Geometria_Portugal_Cont.Rdata")
+```
+
+```{r Reshape dos Quadro de ganhos medios, include=FALSE}
+GanhoRegioes<-GanhoRegioes %>% gather(starts_with("20"), key = "ano", value = "GanhoMedio")
+```
+
+```{r Cálculo de valor médio de vencimentos (dos 7 anos), include=FALSE}
+Medios_Regioes<-GanhoRegioes %>% group_by(Regiao) %>% summarise(Ganho_Medio= mean(GanhoMedio))
+```
+ 
+```{r Anexar ao informação dos ganhos médios, include=FALSE}
+Geometria_Portugal_Cont<-Geometria_Portugal_Cont %>% left_join(Medios_Regioes)
+```
+ 
+```{r pressure, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("../data/img/logo_ine.png")
+```
+
+```{r Gerar Mapa, echo=FALSE}
+Geometria_Portugal_Cont %>% ggplot() + geom_sf(aes(fill=Ganho_Medio))+labs(fill="Vencimentos Médios")+ theme_minimal()
+```
+
+  No gráfico anterior é possivel verificar que a região com valor médio de vencimentos mais alto é a região de **`r Medios_Regioes %>% top_n(1,Ganho_Medio) %>% select(Regiao)`** com uma média de **`r round( Medios_Regioes %>% top_n(1,Ganho_Medio) %>% select(Ganho_Medio),2) `€** e a região com valor médio de vencimentos mais baixo é a região de **`r Medios_Regioes %>% top_n(1,-Ganho_Medio) %>% select(Regiao)`** com uma média de **`r round(Medios_Regioes %>% top_n(1,-Ganho_Medio) %>% select(Ganho_Medio),2) `€**.
+  O valor médio dos vencimentos em Portugal Continental é de **`r round(Medios_Regioes %>% summarize(gmedio_cont = mean(Ganho_Medio, na.rm=TRUE)),2)`€**
+```{r Tabela com os vencimentos, echo=FALSE}
+kable(Medios_Regioes %>% arrange(-Ganho_Medio))
+```
+
+*Dados relativos aos anos 2011-2017* 
+
+```{r Histograma, echo=FALSE, warning=FALSE}
+GanhoRegioes %>% ggplot()+geom_histogram(aes(x=GanhoMedio),fill="tomato", binwidth = 50)+
+                          labs(x="Ganho Médio",y="Observações")
+```
+
+*Distribuição dos vencimentos médios em Portugal Continental*
