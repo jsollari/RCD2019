@@ -46,4 +46,5 @@
   +exploration                          #resultados de "exploration.r"
   +modelling                            #resultados de "modelling.r"
   +visualization                        #resultados de "visualization.r"
-README.txt                              #Este ficheiro
+|LICENSE.txt                            #Licenca de utilizacao MIT
+|README.txt                             #Este ficheiro
